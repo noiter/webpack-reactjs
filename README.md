@@ -227,3 +227,31 @@ output: {
   publicPath: "/assets/" //path that will be considered when requiring your files
 }
 ```
+
+## Using Docker
+
+If you want to distribute your application on the docker registry, create a Dockerfile in the root of application directory:
+
+```
+FROM iojs:onbuild
+
+# Expose the ports that your app uses. For example:
+EXPOSE 8080
+```
+
+Then simply run:
+
+```
+$ docker build -t iojs-app
+...
+$ docker run --rm -it iojs-app
+```
+
+To run a single script, you can mount it in a volume under /usr/src/app. From the root of your application directory (assuming your script is named index.js):
+
+```
+$ docker run -v ${PWD}:/usr/src/app -w /usr/src/app -it --rm iojs iojs index.js
+```
+Reference:
+* http://www.wolfe.id.au/2015/08/08/development-with-webpack-and-docker/
+* https://github.com/nodejs/docker-iojs
