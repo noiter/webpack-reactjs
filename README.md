@@ -1,5 +1,3 @@
-# webpack-howto
-
 ## Goal of this guide
 
 This is a cookbook of how to get things done with webpack. This includes most things we use at Instagram and nothing we don't use.
