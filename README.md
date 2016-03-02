@@ -28,21 +28,22 @@ See also the [babel-loader installation instructions](https://www.npmjs.com/pack
 ```js
 // webpack.config.js
 module.exports = {
-      entry: './main.js',
-      output: {
-        filename: 'bundle.js'       
-      },
-      module: {
-        loaders: [
-          { test: /\.coffee$/, loader: 'coffee-loader' },
-          {
-            test: /\.js$/,
-            loader: 'babel-loader',
-            query: {
-              presets: ['es2015', 'react']
-            }
-          }
-        ]                                                                                              }
+   entry: './main.js',
+   output: {
+     filename: 'bundle.js'       
+   },
+   module: {
+     loaders: [
+       { test: /\.coffee$/, loader: 'coffee-loader' },
+       {
+         test: /\.js$/,
+         loader: 'babel-loader',
+         query: {
+           presets: ['es2015', 'react']
+         }
+       }
+     ]                                                                                              
+   }
 };
 ```
 
@@ -51,26 +52,26 @@ To enable requiring files without specifying the extension, you must add a `reso
 ```js
 // webpack.config.js
 module.exports = {
-      entry: './main.js',
-        output: {
-          filename: 'bundle.js'       
-        },
-        module: {
-          loaders: [
-            { test: /\.coffee$/, loader: 'coffee-loader' },
-            {
-              test: /\.js$/,
-              loader: 'babel-loader',
-              query: {
-                presets: ['es2015', 'react']
-              }
-            }
-          ]
-        },
-        resolve: {
-          // you can now require('file') instead of require('file.coffee')                                                 
-          extensions: ['', '.js', '.json', '.coffee']
+  entry: './main.js',
+  output: {
+    filename: 'bundle.js'       
+  },
+  module: {
+    loaders: [
+      { test: /\.coffee$/, loader: 'coffee-loader' },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'react']
         }
+      }
+    ]
+  },
+  resolve: {
+    // you can now require('file') instead of require('file.coffee')                                                 
+    extensions: ['', '.js', '.json', '.coffee']
+  }
 };
 ```
 
@@ -94,19 +95,19 @@ But you need to teach webpack to do this (again, with loaders):
 ```js
 // webpack.config.js
 module.exports = {
-      entry: './main.js',
-      output: {
-        path: './build', // This is where images AND js will go
-        publicPath: 'http://mycdn.com/', // This is used to generate URLs to e.g. images
-        filename: 'bundle.js'
-      },
-      module: {
-        loaders: [
-          { test: /\.less$/, loader: 'style-loader!css-loader!less-loader' }, // use ! to chain loaders
-          { test: /\.css$/, loader: 'style-loader!css-loader' },
-          { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' } // inline base64 URLs for <=8k images, direct URLs for the rest
-        ]
-      }
+  entry: './main.js',
+  output: {
+    path: './build', // This is where images AND js will go
+    publicPath: 'http://mycdn.com/', // This is used to generate URLs to e.g. images
+    filename: 'bundle.js'
+  },
+  module: {
+    loaders: [
+      { test: /\.less$/, loader: 'style-loader!css-loader!less-loader' }, // use ! to chain loaders
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
+      { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' } // inline base64 URLs for <=8k images, direct URLs for the rest
+    ]
+  }
 };
 ```
 
@@ -116,11 +117,11 @@ We have code we want to gate only to our dev environments (like logging) and our
 
 ```js
 if (__DEV__) {
-      console.warn('Extra logging');
+  console.warn('Extra logging');
 }
 // ...
 if (__PRERELEASE__) {
-      showSecretFeature();
+  showSecretFeature();
 }
 ```
 
@@ -131,16 +132,16 @@ Then teach webpack those magic globals:
 
 // definePlugin takes raw strings and inserts them, so you can put strings of JS if you want.
 var definePlugin = new webpack.DefinePlugin({
-      __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true')),
-      __PRERELEASE__: JSON.stringify(JSON.parse(process.env.BUILD_PRERELEASE || 'false'))
+  __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true')),
+  __PRERELEASE__: JSON.stringify(JSON.parse(process.env.BUILD_PRERELEASE || 'false'))
 });
 
 module.exports = {
-      entry: './main.js',
-      output: {
-        filename: 'bundle.js'       
-      },
-      plugins: [definePlugin]
+  entry: './main.js',
+  output: {
+    filename: 'bundle.js'       
+  },
+  plugins: [definePlugin]
 };
 ```
 
@@ -153,14 +154,14 @@ Let's say you have a profile page and a feed page. You don't want to make the us
 ```js
 // webpack.config.js
 module.exports = {
-      entry: {
-        Profile: './profile.js',
-        Feed: './feed.js'
-      },
-      output: {
-        path: 'build',
-        filename: '[name].js' // Template based on keys in entry above
-      }
+  entry: {
+    Profile: './profile.js',
+    Feed: './feed.js'
+  },
+  output: {
+    path: 'build',
+    filename: '[name].js' // Template based on keys in entry above
+  }
 };
 ```
 
@@ -179,15 +180,15 @@ var commonsPlugin =
   new webpack.optimize.CommonsChunkPlugin('common.js');
 
   module.exports = {
-        entry: {
-          Profile: './profile.js',
-          Feed: './feed.js'
-         },
-         output: {
-           path: 'build',
-           filename: '[name].js' // Template based on keys in entry above
-         },
-         plugins: [commonsPlugin]
+    entry: {
+      Profile: './profile.js',
+      Feed: './feed.js'
+    },
+    output: {
+      path: 'build',
+      filename: '[name].js' // Template based on keys in entry above
+    },
+    plugins: [commonsPlugin]
   };
   ```
 
@@ -201,17 +202,17 @@ Specify the **split point** where you want to load asynchronously. For example:
 
 ```js
 if (window.location.pathname === '/feed') {
-      showLoadingState();
-      require.ensure([], function() { // this syntax is weird but it works
-      hideLoadingState();
-      require('./feed').show(); // when this function is called, the module is guaranteed to be synchronously available.
-      });
+  showLoadingState();
+  require.ensure([], function() { // this syntax is weird but it works
+    hideLoadingState();
+    require('./feed').show(); // when this function is called, the module is guaranteed to be synchronously available.
+  });
 } else if (window.location.pathname === '/profile') {
-      showLoadingState();
-      require.ensure([], function() {
-      hideLoadingState();
-      require('./profile').show();
-      });
+  showLoadingState();
+  require.ensure([], function() {
+    hideLoadingState();
+    require('./profile').show();
+  });
 }
 ```
 
@@ -222,7 +223,7 @@ webpack will assume that those files are in your root directory when you load th
 ```js
 // webpack.config.js
 output: {
-        path: "/home/proj/public/assets", //path to where webpack will build your stuff
-        publicPath: "/assets/" //path that will be considered when requiring your files
+  path: "/home/proj/public/assets", //path to where webpack will build your stuff
+  publicPath: "/assets/" //path that will be considered when requiring your files
 }
 ```
