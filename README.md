@@ -242,7 +242,7 @@ EXPOSE 8080
 Then simply run:
 
 ```
-$ docker build -t iojs-app
+$ docker build -t iojs-app .
 ...
 $ docker run --rm -it iojs-app
 ```
